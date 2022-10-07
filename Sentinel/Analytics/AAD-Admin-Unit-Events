@@ -1,0 +1,8 @@
+//Hunt for Administrative Unit events in Azure AD audit logs (past 30 days). These events should be rare. Make sure they are legitimate.
+
+// Administrative Unit events in Azure AD audit logs [DCSecurityOperations].
+  AuditLogs
+  | where TimeGenerated > ago(30days)
+  | where OperationName in ("Add administrative unit", "Delete administrative unit", "Update administrative unit")
+  | project TimeGenerated, OperationName, InitiatedBy=InitiatedBy.user.userPrincipalName, TargetResources
+  | order by TimeGenerated desc
