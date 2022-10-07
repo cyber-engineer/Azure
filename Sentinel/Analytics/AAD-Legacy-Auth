@@ -1,0 +1,9 @@
+//Hunt for legacy authentication events in Azure AD sign-ins log (past 30 days).
+
+// Legacy authentication in Azure AD.
+  SigninLogs
+  | where TimeGenerated > ago(30d)
+  | where Status.errorCode == 0
+  | where ClientAppUsed !in("Browser", "modern clients", "Mobile Apps and Desktop clients", "")
+  | summarize count() by UserPrincipalName, AppDisplayName, ClientAppUsed
+  | order by count_ desc
