@@ -1,0 +1,13 @@
+//Global admin sign-ins to cloud applications. Look for suspicious global admin accounts, or inappropriate apps for global admin use.
+
+// Global admin sign-ins to cloud applications. Look for suspicious global admin accounts, or inappropriate apps for global admin use.
+  SigninLogs
+  | where TimeGenerated > ago(1d)
+  | join kind=inner (IdentityInfo
+      | where TimeGenerated > ago(14d)
+      )
+      on $left.UserId == $right.AccountObjectId
+  | where AssignedRoles contains "Global Administrator"
+  | sort by TimeGenerated
+  | summarize SignIns=count() by GlobalAdmin=UserPrincipalName, Application=AppDisplayName
+  | order by GlobalAdmin asc
