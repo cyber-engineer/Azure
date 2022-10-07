@@ -1,0 +1,8 @@
+//Hunt for manual or automatic risk confirmations in Azure AD Identity Protectoin (past 30 days).
+
+// Risk confirmations in Azure AD Identity Protection.
+  AuditLogs
+  | where TimeGenerated > ago(30days)
+  | where OperationName in ("ConfirmAccountCompromised", "ConfirmCompromised", "ConfirmSafe", "ConfirmServicePrincipalCompromised", "confirmServicePrincipalCompromised", "dismissServicePrincipal")
+  | project TimeGenerated, OperationName, ResultDescription, InitiatedBy=InitiatedBy.user.userPrincipalName, TargetResources
+  | order by TimeGenerated desc
