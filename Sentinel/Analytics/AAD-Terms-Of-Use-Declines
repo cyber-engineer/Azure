@@ -1,0 +1,8 @@
+//Users not accepting the corporate Terms of Use are usually not allowed to use company IT resources. This might indicate an insider risk.
+
+// Users declining Conditional Access Terms of Use (potential insider risk).
+  AuditLogs
+  | where TimeGenerated > ago(30days)
+  | where OperationName in ("Decline Terms Of Use")
+  | project TimeGenerated, OperationName, ResultDescription, InitiatedBy=InitiatedBy.user.userPrincipalName, TargetResources
+  | order by TimeGenerated desc
