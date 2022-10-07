@@ -1,6 +1,6 @@
 //Hunt for Conditional Access update events in Azure AD (past 30 days).
 
-// Get all Conditional Access policy update events [DCSecurityOperations].
+// Get all Conditional Access policy update events.
   AuditLogs
   | where TimeGenerated > ago(30d)
   | where OperationName in ("Add conditional access policy", "Update conditional access policy", "Delete conditional access policy")
