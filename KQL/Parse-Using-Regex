@@ -1,0 +1,10 @@
+//Scenario: We need to load the description field and then take "UID:" and it's following text
+
+//Load data for testing purposes using data table. The test table name is "EndpointAlerts" in this example
+let EndpointAlerts = datatable(EventText:string)
+[
+"Testing descripton field for parsing use case IDs. UID:sdr_test_use_case_id_123"
+];
+EndpointAlerts
+| parse kind = regex EventText with * "UID:" UID
+| project UID
